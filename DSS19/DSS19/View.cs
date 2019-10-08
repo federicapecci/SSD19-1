@@ -16,14 +16,23 @@ namespace DSS19
     public partial class App : Form
     {
 
-        private Controller C = new Controller();
+        private Controller C;
         TextBoxTraceListener _textBoxListener;
-
+        
         public App()
         {
             InitializeComponent();
             _textBoxListener = new TextBoxTraceListener(txtConsole);
             Trace.Listeners.Add(_textBoxListener);
+
+            OpenFileDialog OFD = new OpenFileDialog();
+            string dbPath="";
+            if(OFD.ShowDialog() == DialogResult.OK)
+            {
+                dbPath = OFD.FileName;
+                txtConsole.AppendText("Sqlite file name: "+dbPath+Environment.NewLine);
+            }
+            C = new Controller(dbPath);
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
@@ -90,6 +99,11 @@ namespace DSS19
         }
 
         private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void App_Load(object sender, EventArgs e)
         {
 
         }

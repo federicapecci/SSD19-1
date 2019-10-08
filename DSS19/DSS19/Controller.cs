@@ -13,12 +13,12 @@ namespace DSS19
     {
         private Persistence P = new Persistence();
         string connectionString;
-   
+       // public string dbpath;
 
-        public Controller()
+        public Controller(string dbpath)
         {
            
-            string dbpath = @"C:\Users\Enrico\Desktop\ordiniMI2018.sqlite";
+            //string dbpath = @"C:\Users\Enrico\Desktop\ordiniMI2018.sqlite";
             string sdb = ConfigurationManager.AppSettings["dbServer"]; 
 
             switch (sdb)
