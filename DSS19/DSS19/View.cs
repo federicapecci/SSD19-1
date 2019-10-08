@@ -25,9 +25,9 @@ namespace DSS19
             _textBoxListener = new TextBoxTraceListener(txtConsole);
             Trace.Listeners.Add(_textBoxListener);
 
-            OpenFileDialog OFD = new OpenFileDialog();
-            string dbPath="";
-            if(OFD.ShowDialog() == DialogResult.OK)
+            string dbPath = "";
+            OpenFileDialog OFD = new OpenFileDialog(); //finestra per caricare il file del db
+            if(OFD.ShowDialog() == DialogResult.OK) //TODO mancano i controlli sul tipo del file
             {
                 dbPath = OFD.FileName;
                 txtConsole.AppendText("Sqlite file name: "+dbPath+Environment.NewLine);

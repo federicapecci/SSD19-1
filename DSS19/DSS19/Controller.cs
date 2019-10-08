@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Configuration;
+using System.Data.Common;
 
 namespace DSS19
 {
@@ -13,11 +14,9 @@ namespace DSS19
     {
         private Persistence P = new Persistence();
         string connectionString;
-       // public string dbpath;
 
         public Controller(string dbpath)
         {
-           
             //string dbpath = @"C:\Users\Enrico\Desktop\ordiniMI2018.sqlite";
             string sdb = ConfigurationManager.AppSettings["dbServer"]; 
 
@@ -25,11 +24,14 @@ namespace DSS19
             {
                 case "SQLiteConn": connectionString = ConfigurationManager.ConnectionStrings["SQLiteConn"].ConnectionString;
                                    connectionString = connectionString.Replace("DBFILE", dbpath); 
+                                   P.factory = ConfigurationManager.ConnectionStrings["SQLiteConn"].ProviderName;
                                    break;
-                    //factory = ConfigurationManager.ConnectionStrings["SQLiteConn"].ProviderName; break;
-                case "LocalDbConn":connectionString = ConfigurationManager.ConnectionStrings["LocalSqlServConn"].ConnectionString; break;
-                //factory = ConfigurationManager.ConnectionStrings["LocalSqlServConn"].ProviderName; break;
-                case "RemoteSqlServConn": connectionString = ConfigurationManager.ConnectionStrings["RemoteSQLConn"].ConnectionString; break;
+                case "LocalDbConn":connectionString = ConfigurationManager.ConnectionStrings["LocalSqlServConn"].ConnectionString; 
+                                   P.factory = ConfigurationManager.ConnectionStrings["LocalSqlServConn"].ProviderName;
+                                   break;
+                case "RemoteSqlServConn": connectionString = ConfigurationManager.ConnectionStrings["RemoteSQLConn"].ConnectionString;
+                                          P.factory = ConfigurationManager.ConnectionStrings["LocalSqlServConn"].ProviderName;
+                                          break;
             }
             P.connectionString = connectionString;
         }

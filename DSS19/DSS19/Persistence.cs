@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Data;
 using System.Data.SQLite;
 using System.Data.SqlClient;
+using System.Data.Common;
 
 namespace DSS19
 {
@@ -14,6 +15,7 @@ namespace DSS19
     {
         public string connectionString;
         private IDbConnection conn = null;
+        public string factory = "";
 
         public void readDb()
         {
@@ -31,12 +33,16 @@ namespace DSS19
         {
             // string dbpath = @"C:\Users\Enrico\Desktop\ordiniMI2018.sqlite"; //connessione al DB sqlite
             // string sqlLiteConnString = @"Data Source=" + dbpath + "; Version=3";
-            conn = new SQLiteConnection(connectionString);
+            //conn = new SQLiteConnection(connectionString);
             //conn = new SqlConnection(connectionString);
+
+            DbProviderFactory dbFactory = DbProviderFactories.GetFactory(factory);
+            conn = dbFactory.CreateConnection();
             try
             {
-                conn.Open();
+                conn.ConnectionString = connectionString;
                 Trace.WriteLine("[PERSISTANCE] Connessione DB aperta");
+                conn.Open();
                 return conn;
             }
             catch (Exception ex)
@@ -44,6 +50,8 @@ namespace DSS19
                 Trace.WriteLine("[PERSISTANCE] errore: " + ex.Message);
             }
             return null;
+
+            
         }
 
         private IDataReader executeQuery(string queryText)
