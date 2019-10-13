@@ -22,16 +22,19 @@ namespace DSS19
 
             switch (sdb)
             {
-                case "SQLiteConn": connectionString = ConfigurationManager.ConnectionStrings["SQLiteConn"].ConnectionString;
-                                   connectionString = connectionString.Replace("DBFILE", dbpath); 
-                                   P.factory = ConfigurationManager.ConnectionStrings["SQLiteConn"].ProviderName;
-                                   break;
-                case "LocalDbConn":connectionString = ConfigurationManager.ConnectionStrings["LocalSqlServConn"].ConnectionString; 
-                                   P.factory = ConfigurationManager.ConnectionStrings["LocalSqlServConn"].ProviderName;
-                                   break;
-                case "RemoteSqlServConn": connectionString = ConfigurationManager.ConnectionStrings["RemoteSQLConn"].ConnectionString;
-                                          P.factory = ConfigurationManager.ConnectionStrings["LocalSqlServConn"].ProviderName;
-                                          break;
+                case "SQLiteConn": 
+                    connectionString = ConfigurationManager.ConnectionStrings["SQLiteConn"].ConnectionString;
+                    connectionString = connectionString.Replace("DBFILE", dbpath); 
+                    P.factory = ConfigurationManager.ConnectionStrings["SQLiteConn"].ProviderName;
+                    break;
+                case "LocalDbConn":
+                    connectionString = ConfigurationManager.ConnectionStrings["LocalSqlServConn"].ConnectionString; 
+                    P.factory = ConfigurationManager.ConnectionStrings["LocalSqlServConn"].ProviderName;
+                    break;
+                case "RemoteSqlServConn": 
+                    connectionString = ConfigurationManager.ConnectionStrings["RemoteSQLConn"].ConnectionString;
+                    P.factory = ConfigurationManager.ConnectionStrings["RemoteSQLConn"].ProviderName;
+                    break;
             }
             P.connectionString = connectionString;
         }
@@ -41,11 +44,11 @@ namespace DSS19
             Trace.WriteLine("Controller read DB");
             if(custID == "")
             {
-                P.readDb();
+                P.selectFirstRecords();
             }
             else
             {
-                P.readDb(custID);
+                P.selectOrdersByCustId(custID);
             }
         }
 
