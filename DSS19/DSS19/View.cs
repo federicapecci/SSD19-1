@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 
@@ -13,9 +6,12 @@ using System.Diagnostics;
 
 namespace DSS19
 {
+
     public partial class App : Form
     {
 
+
+        private int customerRandomNumber;
         private Controller C;
         TextBoxTraceListener _textBoxListener;
         
@@ -33,12 +29,10 @@ namespace DSS19
                 txtConsole.AppendText("Sqlite file name: "+dbPath+Environment.NewLine);
             }
             C = new Controller(dbPath);
+            Random rnd = new Random();
+            customerRandomNumber = rnd.Next(1, 100);
         }
 
-        private void toolStripMenuItem2_Click(object sender, EventArgs e)
-        {
-          
-        }
 
         private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
         {
@@ -48,6 +42,12 @@ namespace DSS19
         private void readDBToolStripMenuItem_Click(object sender, EventArgs e)
         {
             readDb();
+        }
+
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            //C.readCustomerListORM(   ,100);
         }
 
         private void readDb()
@@ -112,5 +112,21 @@ namespace DSS19
         {
 
         }
+
+        private void readCustomerORMToolStripMenuItem_Click(object sender, EventArgs e)
+        {      
+            C.readCustomerListORM(customerRandomNumber);
+        }
+
+        private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void readQuantitiesORMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            C.readQuantitiesListORM();
+        }
+
     }
 }

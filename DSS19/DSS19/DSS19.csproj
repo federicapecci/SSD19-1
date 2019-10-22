@@ -84,6 +84,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller.cs" />
+    <Compile Include="ordini.cs" />
+    <Compile Include="SQLiteConfiguration.cs" />
+    <Compile Include="SQLiteDatabaseContext.cs" />
     <Compile Include="TextBoxTraceListener.cs" />
     <Compile Include="View.cs">
       <SubType>Form</SubType>

@@ -197,7 +197,137 @@
             {
                 Trace.WriteLine("[PERSISTANCE] errore: " + errTxt);
             }
+
+            public void selectCustomerListORM(string dbpath, int n) {
+
+                List<string> custLst = new List<string>();
+                try
+                {
+          
+                    string queryText = "SELECT distinct customer from ordini ORDER BY RANDOM() LIMIT " + n;
+                    using (IDataReader reader = executeQuery(queryText))
+                    {
+                        while (reader.Read())
+                        {
+                            custLst.Add(Convert.ToString(reader["customer"]));
+                  
+                    }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    errorLog("customerID " + ex.Message);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+         
+                Trace.WriteLine("Quantità: " + string.Join(",", custLst));
+                Trace.WriteLine("[PERSISTANCE] fine lettura dati ");
+
         }
 
 
+        public string selectQuantitiesListORM(string dbpath)
+        {
+
+            List<int> quantList;
+            string ret = "Error reading DB";
+            try
+            {
+                //var ctx = new SQLiteDatabaseContext(dbpath);
+                using (var ctx = new SQLiteDatabaseContext(dbpath))
+                {
+                    quantList = ctx.Database.SqlQuery<int>("SELECT quant from ordini limit 100").ToList();
+                }
+
+                // legge solo alcuni clienti (si poteva fare tutto nella query)
+                ret = string.Join(",", quantList);
+                Trace.WriteLine(ret);
+                // Aggiungere tutti gli altri casi. Update, delete, insert ..
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine($"Error: {ex.Message}");
+            }
+
+            return ret;
+        }
+
+
+        //insert ORM
+
+        public void insertCustomertORM(string dbpath, string cust)
+        {
+            try
+            {
+                //var ctx = new SQLiteDatabaseContext(dbpath);
+                using (var ctx = new SQLiteDatabaseContext(dbpath))
+                {
+                    ctx.Database.ExecuteSqlCommand("INSERT INTO ordini (customer) VALUES ('" + cust + "') ");
+                }
+            }
+            catch (Exception ex)
+            {
+                errorLog("insert ORM" + ex.Message);
+            }          
+        }
+
+        //update ORM
+
+        public void updateCustomertORM(string dbpath, string oldCust, string newCust)
+        {
+            try
+            {
+                //var ctx = new SQLiteDatabaseContext(dbpath);
+                using (var ctx = new SQLiteDatabaseContext(dbpath))
+                {
+                    ctx.Database.ExecuteSqlCommand("UPDATE ordini SET customer = '" + newCust + "'  WHERE customer = '" + oldCust + "'");
+
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                errorLog("insert ORM" + ex.Message);
+            }
+        }
+
+        //update ORM
+
+        public void deleteCustomertORM(string dbpath, string oldCust, string newCust)
+        {
+            try
+            {
+                //var ctx = new SQLiteDatabaseContext(dbpath);
+                using (var ctx = new SQLiteDatabaseContext(dbpath))
+                {
+                    ctx.Database.ExecuteSqlCommand("DELETE FROM ordini WHERE customer = '" + cust + "');
+
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                errorLog("insert ORM" + ex.Message);
+            }
+        }
+
+
+
+
+
+
+
     }
+}
+
+
+
+
+
+    

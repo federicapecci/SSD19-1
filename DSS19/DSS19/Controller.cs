@@ -14,10 +14,11 @@ namespace DSS19
     {
         private Persistence P = new Persistence();
         string connectionString;
+        string dbpath;
 
-        public Controller(string dbpath)
+        public Controller(string _dbpath)
         {
-            //string dbpath = @"C:\Users\Enrico\Desktop\ordiniMI2018.sqlite";
+            dbpath = _dbpath;
             string sdb = ConfigurationManager.AppSettings["dbServer"]; 
 
             switch (sdb)
@@ -35,6 +36,7 @@ namespace DSS19
                     connectionString = ConfigurationManager.ConnectionStrings["RemoteSQLConn"].ConnectionString;
                     P.factory = ConfigurationManager.ConnectionStrings["RemoteSQLConn"].ProviderName;
                     break;
+
             }
             P.connectionString = connectionString;
         }
@@ -54,7 +56,8 @@ namespace DSS19
 
         public void insert(string cust)
         {
-            P.insert(cust);
+            //P.insert(cust);
+            P.insertCustomertORM(dbpath, cust);
         }
 
         public void delete(string cust)
@@ -64,7 +67,22 @@ namespace DSS19
 
         public void update(string oldCust, string newCust)
         {
-            P.update(oldCust, newCust);
+            //P.update(oldCust, newCust);
+            P.updateCustomertORM(dbpath, oldCust, newCust);
         }
+
+        public void readCustomerListORM(int n)
+        {
+            P.selectCustomerListORM(dbpath, n);
+        }
+
+        public void readQuantitiesListORM()
+        {
+            P.selectQuantitiesListORM(dbpath);
+        }
+
+      
+
+
     }
 }
