@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Configuration;
 using System.Data.Common;
+using PyGAP2019;
+using System.Drawing;
 
 namespace DSS19
 {
@@ -16,7 +18,12 @@ namespace DSS19
         string connectionString;
         string dbpath;
 
-        public Controller(string _dbpath)
+        string pythonPath;
+        string pythonScriptsPath;
+        PythonRunner pyRunner;
+        string strCustomers;
+
+        /*public Controller(string _dbpath)
         {
             dbpath = _dbpath;
             string sdb = ConfigurationManager.AppSettings["dbServer"]; 
@@ -39,7 +46,15 @@ namespace DSS19
 
             }
             P.connectionString = connectionString;
+        }*/
+
+        public Controller (string _pyPath, string _pyScriptPath)
+        {
+            this.pythonPath = _pyPath;
+            this.pythonScriptsPath = _pyScriptPath;
+            this.pyRunner = new PythonRunner(pythonPath, 20000);
         }
+
 
         public void readDb(string custID) 
         {
@@ -80,6 +95,38 @@ namespace DSS19
         {
             P.selectQuantitiesListORM(dbpath);
         }
+
+        //legge una stringa di codice clienti da graficare
+        public string readClientiDB(string dbOrdiniPath)
+        {
+            int numSerie = 12; //numero di clienti di cui leggere la serie
+            strCustomers = P.selectCustomerListORMBis(dbOrdiniPath, numSerie);
+            Trace.WriteLine($"Clienti: {strCustomers}");
+            return strCustomers;
+        }
+
+        public async Task<Bitmap> readCustomerOrdersChart(string dbOrdiniPath)
+        {
+            Trace.WriteLine("Getting the orders chart...");
+            //pythonScriptsPath = System.IO.Path.GetFullPath(pythonScriptsPath);
+            pythonScriptsPath = @"C:\Users\federica.pecci2\Documents\GitHub\SSD19-1\DSS19\DSS19\python_scripts";
+            
+            try
+            {
+                Bitmap bmp = await pyRunner.getImageAsync(
+                    pythonScriptsPath,
+                    "chartOrders.py",
+                    pythonScriptsPath,
+                    dbOrdiniPath,
+                    strCustomers); //strCustomers riga dei customer restituita dal db, select dei customer random
+                return bmp;
+            }catch(Exception exception)
+            {
+                Trace.WriteLine("[CONTROLLER] errore: " + exception.Message);
+                return null;
+            }
+        }
+
 
       
 

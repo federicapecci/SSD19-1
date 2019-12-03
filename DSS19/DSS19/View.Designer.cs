@@ -48,12 +48,17 @@ namespace DSS19
             this.updateBtn = new System.Windows.Forms.ToolStripButton();
             this.cleanTextBox = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.btnSARIMA = new System.Windows.Forms.ToolStripButton();
+            this.btnLocalSearch = new System.Windows.Forms.ToolStripButton();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -65,7 +70,7 @@ namespace DSS19
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-            this.menuStrip1.Size = new System.Drawing.Size(1200, 44);
+            this.menuStrip1.Size = new System.Drawing.Size(1200, 42);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -75,7 +80,7 @@ namespace DSS19
             this.readDBWithORMToolStripMenuItem,
             this.readQuantitiesWithORMToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(72, 38);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(72, 36);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // readDBWithORMToolStripMenuItem
@@ -95,7 +100,7 @@ namespace DSS19
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 74);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 72);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.splitContainer1.Name = "splitContainer1";
             // 
@@ -106,7 +111,11 @@ namespace DSS19
             this.splitContainer1.Panel1.Controls.Add(this.txtNewCustomer);
             this.splitContainer1.Panel1.Controls.Add(this.lblCustomer);
             this.splitContainer1.Panel1.Controls.Add(this.txtCustomer);
-            this.splitContainer1.Size = new System.Drawing.Size(1200, 629);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.pictureBox2);
+            this.splitContainer1.Size = new System.Drawing.Size(1200, 631);
             this.splitContainer1.SplitterDistance = 399;
             this.splitContainer1.SplitterWidth = 6;
             this.splitContainer1.TabIndex = 0;
@@ -122,7 +131,7 @@ namespace DSS19
             this.txtConsole.Multiline = true;
             this.txtConsole.Name = "txtConsole";
             this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtConsole.Size = new System.Drawing.Size(388, 516);
+            this.txtConsole.Size = new System.Drawing.Size(388, 518);
             this.txtConsole.TabIndex = 0;
             this.txtConsole.WordWrap = false;
             this.txtConsole.TextChanged += new System.EventHandler(this.txtConsole_TextChanged);
@@ -233,13 +242,44 @@ namespace DSS19
             this.insertBtn,
             this.deleteBtn,
             this.updateBtn,
+            this.btnSARIMA,
+            this.btnLocalSearch,
             this.cleanTextBox});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 44);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 42);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.toolStrip1.Size = new System.Drawing.Size(1200, 30);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
+            // 
+            // btnSARIMA
+            // 
+            this.btnSARIMA.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.btnSARIMA.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnSARIMA.Image = ((System.Drawing.Image)(resources.GetObject("btnSARIMA.Image")));
+            this.btnSARIMA.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSARIMA.Name = "btnSARIMA";
+            this.btnSARIMA.Size = new System.Drawing.Size(46, 24);
+            this.btnSARIMA.Text = "toolStripButton2";
+            // 
+            // btnLocalSearch
+            // 
+            this.btnLocalSearch.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.btnLocalSearch.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnLocalSearch.Image = ((System.Drawing.Image)(resources.GetObject("btnLocalSearch.Image")));
+            this.btnLocalSearch.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnLocalSearch.Name = "btnLocalSearch";
+            this.btnLocalSearch.Size = new System.Drawing.Size(46, 24);
+            this.btnLocalSearch.Text = "toolStripButton2";
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox2.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(795, 631);
+            this.pictureBox2.TabIndex = 0;
+            this.pictureBox2.TabStop = false;
             // 
             // App
             // 
@@ -258,11 +298,13 @@ namespace DSS19
             this.menuStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -289,5 +331,8 @@ namespace DSS19
         private System.Windows.Forms.ToolStripButton cleanTextBox;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripMenuItem readQuantitiesWithORMToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton btnSARIMA;
+        private System.Windows.Forms.ToolStripButton btnLocalSearch;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }

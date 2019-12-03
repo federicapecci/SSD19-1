@@ -298,7 +298,7 @@
 
         //update ORM
 
-        public void deleteCustomertORM(string dbpath, string oldCust, string newCust)
+        /*public void deleteCustomertORM(string dbpath, string oldCust, string newCust)
         {
             try
             {
@@ -315,14 +315,36 @@
             {
                 errorLog("insert ORM" + ex.Message);
             }
+        }*/
+
+        public string selectCustomerListORMBis(string dbpath, int n)
+        {
+            String ret = "";
+            List<string> custLst = null;
+
+
+            try
+            {
+                //var ctx = new SQLiteDatabaseContext(dbpath);
+                using (var ctx = new SQLiteDatabaseContext(dbpath))
+                {
+                    custLst = ctx.Database.SqlQuery<string>("SELECT distinct customer from ordini ORDER BY RANDOM() LIMIT " + n).ToList();
+                }
+                IList<string> lstOutString = new List<string>();
+                foreach (var cust in custLst)
+                {
+                    lstOutString.Add("'" + cust + "'");
+                }
+                ret = string.Join(",", lstOutString);
+            }
+
+            catch (Exception ex)
+            {
+                Trace.WriteLine("[PERSISTENCE] " + ex.Message);
+            }
+
+            return ret;
         }
-
-
-
-
-
-
-
     }
 }
 

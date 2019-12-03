@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Diagnostics;
-
-
+using System.Configuration;
+using System.Drawing;
 
 namespace DSS19
 {
@@ -14,23 +14,27 @@ namespace DSS19
         private int customerRandomNumber;
         private Controller C;
         TextBoxTraceListener _textBoxListener;
-        
+        string dbOrdiniPath;
+        string pythonPath;
+        string pythonScriptsPath;
+
+
+
         public App()
         {
             InitializeComponent();
             _textBoxListener = new TextBoxTraceListener(txtConsole);
             Trace.Listeners.Add(_textBoxListener);
 
-            string dbPath = "";
-            OpenFileDialog OFD = new OpenFileDialog(); //finestra per caricare il file del db
-            if(OFD.ShowDialog() == DialogResult.OK) //TODO mancano i controlli sul tipo del file
-            {
-                dbPath = OFD.FileName;
-                txtConsole.AppendText("Sqlite file name: "+dbPath+Environment.NewLine);
-            }
-            C = new Controller(dbPath);
-            Random rnd = new Random();
-            customerRandomNumber = rnd.Next(1, 100);
+            btnSARIMA.Enabled = false;
+            btnLocalSearch.Enabled = false;
+
+            dbOrdiniPath = ConfigurationManager.AppSettings["dbordiniFile"];
+            pythonPath = ConfigurationManager.AppSettings["pythonPath"];
+            pythonScriptsPath = ConfigurationManager.AppSettings["pyScripts"];
+
+            C = new Controller(pythonPath, pythonScriptsPath);
+
         }
 
 
@@ -47,19 +51,21 @@ namespace DSS19
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            //C.readCustomerListORM(   ,100);
         }
 
         private void readDb()
         {
-             txtConsole.AppendText("Read Db clicked \n");
-            //C.readDb(txtCustomer.Text);
+            txtConsole.AppendText("Read Db clicked \n");
+            C.readClientiDB(dbOrdiniPath);
         }
 
-        private void loadDb()
+        private async void loadDb()
         {
             txtConsole.AppendText("Load Db button clicked \n");
-            C.readDb(txtCustomer.Text);
+            C.readClientiDB(dbOrdiniPath);
+            Bitmap bm = await C.readCustomerOrdersChart(dbOrdiniPath);
+            pictureBox2.Image = bm;
+            btnSARIMA.Enabled = true;
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)

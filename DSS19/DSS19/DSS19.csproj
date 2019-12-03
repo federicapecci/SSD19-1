@@ -85,6 +85,7 @@
   <ItemGroup>
     <Compile Include="Controller.cs" />
     <Compile Include="ordini.cs" />
+    <Compile Include="PythonRunner.cs" />
     <Compile Include="SQLiteConfiguration.cs" />
     <Compile Include="SQLiteDatabaseContext.cs" />
     <Compile Include="TextBoxTraceListener.cs" />
