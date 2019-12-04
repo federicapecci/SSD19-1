@@ -41,24 +41,23 @@ namespace DSS19
             this.txtNewCustomer = new System.Windows.Forms.TextBox();
             this.lblCustomer = new System.Windows.Forms.Label();
             this.txtCustomer = new System.Windows.Forms.TextBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.insertBtn = new System.Windows.Forms.ToolStripButton();
             this.deleteBtn = new System.Windows.Forms.ToolStripButton();
             this.updateBtn = new System.Windows.Forms.ToolStripButton();
-            this.cleanTextBox = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnSARIMA = new System.Windows.Forms.ToolStripButton();
             this.btnLocalSearch = new System.Windows.Forms.ToolStripButton();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -100,7 +99,7 @@ namespace DSS19
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 72);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 84);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.splitContainer1.Name = "splitContainer1";
             // 
@@ -115,7 +114,7 @@ namespace DSS19
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.pictureBox2);
-            this.splitContainer1.Size = new System.Drawing.Size(1200, 631);
+            this.splitContainer1.Size = new System.Drawing.Size(1200, 619);
             this.splitContainer1.SplitterDistance = 399;
             this.splitContainer1.SplitterWidth = 6;
             this.splitContainer1.TabIndex = 0;
@@ -131,7 +130,7 @@ namespace DSS19
             this.txtConsole.Multiline = true;
             this.txtConsole.Name = "txtConsole";
             this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtConsole.Size = new System.Drawing.Size(388, 518);
+            this.txtConsole.Size = new System.Drawing.Size(388, 506);
             this.txtConsole.TabIndex = 0;
             this.txtConsole.WordWrap = false;
             this.txtConsole.TextChanged += new System.EventHandler(this.txtConsole_TextChanged);
@@ -177,6 +176,15 @@ namespace DSS19
             this.txtCustomer.Size = new System.Drawing.Size(230, 31);
             this.txtCustomer.TabIndex = 1;
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox2.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(795, 619);
+            this.pictureBox2.TabIndex = 0;
+            this.pictureBox2.TabStop = false;
+            // 
             // pictureBox1
             // 
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -192,7 +200,7 @@ namespace DSS19
             this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(46, 24);
+            this.toolStripButton1.Size = new System.Drawing.Size(46, 36);
             this.toolStripButton1.Text = "Load DB";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
@@ -202,7 +210,7 @@ namespace DSS19
             this.insertBtn.Image = ((System.Drawing.Image)(resources.GetObject("insertBtn.Image")));
             this.insertBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.insertBtn.Name = "insertBtn";
-            this.insertBtn.Size = new System.Drawing.Size(46, 24);
+            this.insertBtn.Size = new System.Drawing.Size(46, 36);
             this.insertBtn.Text = "Insert";
             this.insertBtn.Click += new System.EventHandler(this.insertBtn_Click);
             // 
@@ -212,7 +220,7 @@ namespace DSS19
             this.deleteBtn.Image = ((System.Drawing.Image)(resources.GetObject("deleteBtn.Image")));
             this.deleteBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.deleteBtn.Name = "deleteBtn";
-            this.deleteBtn.Size = new System.Drawing.Size(46, 24);
+            this.deleteBtn.Size = new System.Drawing.Size(46, 36);
             this.deleteBtn.Text = "delete";
             this.deleteBtn.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
@@ -222,17 +230,9 @@ namespace DSS19
             this.updateBtn.Image = ((System.Drawing.Image)(resources.GetObject("updateBtn.Image")));
             this.updateBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.updateBtn.Name = "updateBtn";
-            this.updateBtn.Size = new System.Drawing.Size(46, 24);
+            this.updateBtn.Size = new System.Drawing.Size(46, 36);
             this.updateBtn.Text = "update";
             this.updateBtn.Click += new System.EventHandler(this.updateBtn_Click);
-            // 
-            // cleanTextBox
-            // 
-            this.cleanTextBox.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.cleanTextBox.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.cleanTextBox.Name = "cleanTextBox";
-            this.cleanTextBox.Size = new System.Drawing.Size(46, 24);
-            this.cleanTextBox.Text = "Clean";
             // 
             // toolStrip1
             // 
@@ -243,24 +243,24 @@ namespace DSS19
             this.deleteBtn,
             this.updateBtn,
             this.btnSARIMA,
-            this.btnLocalSearch,
-            this.cleanTextBox});
+            this.btnLocalSearch});
             this.toolStrip1.Location = new System.Drawing.Point(0, 42);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this.toolStrip1.Size = new System.Drawing.Size(1200, 30);
+            this.toolStrip1.Size = new System.Drawing.Size(1200, 42);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
             // btnSARIMA
             // 
-            this.btnSARIMA.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.btnSARIMA.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnSARIMA.BackColor = System.Drawing.SystemColors.Info;
+            this.btnSARIMA.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.btnSARIMA.Image = ((System.Drawing.Image)(resources.GetObject("btnSARIMA.Image")));
             this.btnSARIMA.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnSARIMA.Name = "btnSARIMA";
-            this.btnSARIMA.Size = new System.Drawing.Size(46, 24);
-            this.btnSARIMA.Text = "toolStripButton2";
+            this.btnSARIMA.Size = new System.Drawing.Size(91, 36);
+            this.btnSARIMA.Text = "ARIMA";
+            this.btnSARIMA.Click += new System.EventHandler(this.btnSARIMA_Click);
             // 
             // btnLocalSearch
             // 
@@ -269,17 +269,8 @@ namespace DSS19
             this.btnLocalSearch.Image = ((System.Drawing.Image)(resources.GetObject("btnLocalSearch.Image")));
             this.btnLocalSearch.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnLocalSearch.Name = "btnLocalSearch";
-            this.btnLocalSearch.Size = new System.Drawing.Size(46, 24);
+            this.btnLocalSearch.Size = new System.Drawing.Size(46, 36);
             this.btnLocalSearch.Text = "toolStripButton2";
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox2.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(795, 631);
-            this.pictureBox2.TabIndex = 0;
-            this.pictureBox2.TabStop = false;
             // 
             // App
             // 
@@ -301,10 +292,10 @@ namespace DSS19
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -328,7 +319,6 @@ namespace DSS19
         private System.Windows.Forms.ToolStripButton insertBtn;
         private System.Windows.Forms.ToolStripButton deleteBtn;
         private System.Windows.Forms.ToolStripButton updateBtn;
-        private System.Windows.Forms.ToolStripButton cleanTextBox;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripMenuItem readQuantitiesWithORMToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton btnSARIMA;

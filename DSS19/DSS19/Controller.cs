@@ -97,15 +97,15 @@ namespace DSS19
         }
 
         //legge una stringa di codice clienti da graficare
-        public string readClientiDB(string dbOrdiniPath)
+        public string readClientiDB(string dbOrdiniPath, int customerNumber)
         {
-            int numSerie = 12; //numero di clienti di cui leggere la serie
+            int numSerie = customerNumber; //numero di clienti di cui leggere la serie
             strCustomers = P.selectCustomerListORMBis(dbOrdiniPath, numSerie);
             Trace.WriteLine($"Clienti: {strCustomers}");
             return strCustomers;
         }
 
-        public async Task<Bitmap> readCustomerOrdersChart(string dbOrdiniPath)
+        public async Task<Bitmap> readCustomerOrdersChart(string dbOrdiniPath, string pyScript)
         {
             Trace.WriteLine("Getting the orders chart...");
             //pythonScriptsPath = System.IO.Path.GetFullPath(pythonScriptsPath);
@@ -113,10 +113,11 @@ namespace DSS19
             
             try
             {
+               
                 Bitmap bmp = await pyRunner.getImageAsync(
                     pythonScriptsPath,
-                    "chartOrders.py",
-                    pythonScriptsPath,
+                    pyScript,  // chartOrders.py o nuovo script
+                    pythonScriptsPath, 
                     dbOrdiniPath,
                     strCustomers); //strCustomers riga dei customer restituita dal db, select dei customer random
                 return bmp;
@@ -127,8 +128,42 @@ namespace DSS19
             }
         }
 
+        public async Task<string> readForecastRows(string dbOrdiniPath, string pyScript)
+        {
+            Trace.WriteLine("Getting the orders chart...");
+             
+            pythonScriptsPath = @"C:\Users\federica.pecci2\Documents\GitHub\SSD19-1\DSS19\DSS19\python_scripts";
 
-      
+            string fcast = "";
+
+            try
+            {
+                string list = await pyRunner.getStringsAsync(
+                    pythonScriptsPath,
+                    pyScript,  // chartOrders.py o nuovo script
+                    pythonScriptsPath,
+                    dbOrdiniPath, 
+                    strCustomers); //strCustomers riga dei customer restituita dal db, select dei customer random
+               
+                string[] lines = list.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach(string s in lines)
+                {
+                    if (s.StartsWith("Actual"))
+                    {
+                        fcast = s.Substring(s.LastIndexOf(" "));
+                        Trace.WriteLine(fcast);
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Trace.WriteLine("[CONTROLLER] errore: " + exception.Message);
+            }
+
+            return fcast;
+        }
+
 
 
     }

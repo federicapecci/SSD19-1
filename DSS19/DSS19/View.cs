@@ -26,8 +26,11 @@ namespace DSS19
             _textBoxListener = new TextBoxTraceListener(txtConsole);
             Trace.Listeners.Add(_textBoxListener);
 
-            btnSARIMA.Enabled = false;
-            btnLocalSearch.Enabled = false;
+            //btnSARIMA.Enabled = false;
+            //btnLocalSearch.Enabled = false;
+
+            btnSARIMA.Enabled = true;
+            btnLocalSearch.Enabled = true;
 
             dbOrdiniPath = ConfigurationManager.AppSettings["dbordiniFile"];
             pythonPath = ConfigurationManager.AppSettings["pythonPath"];
@@ -56,21 +59,31 @@ namespace DSS19
         private void readDb()
         {
             txtConsole.AppendText("Read Db clicked \n");
-            C.readClientiDB(dbOrdiniPath);
+            //C.readClientiDB(dbOrdiniPath);
         }
 
-        private async void loadDb()
+        private async void loadDb(string pyScript, int customerNumber)
         {
-            txtConsole.AppendText("Load Db button clicked \n");
-            C.readClientiDB(dbOrdiniPath);
-            Bitmap bm = await C.readCustomerOrdersChart(dbOrdiniPath);
-            pictureBox2.Image = bm;
-            btnSARIMA.Enabled = true;
+         
+            C.readClientiDB(dbOrdiniPath, customerNumber);
+            
+            //stampo la bitmap in un grafico 
+            //Bitmap bm = await C.readCustomerOrdersChart(dbOrdiniPath, pyScript);
+            //pictureBox2.Image = bm;
+            
+            //stampo le previsioni su traceline
+            await C.readForecastRows(dbOrdiniPath, pyScript);           
+         
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            loadDb();
+            loadDb("chartOrders.py", 12);
+        }
+
+        private void btnSARIMA_Click(object sender, EventArgs e)
+        {
+            loadDb("arima_forecast.py", 1);
         }
 
         private void txtConsole_TextChanged(object sender, EventArgs e)
