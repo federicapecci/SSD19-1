@@ -8,6 +8,8 @@ using System.Configuration;
 using System.Data.Common;
 using PyGAP2019;
 using System.Drawing;
+using System.IO;
+using System.Globalization;
 
 namespace DSS19
 {
@@ -21,7 +23,10 @@ namespace DSS19
         string pythonPath;
         string pythonScriptsPath;
         PythonRunner pyRunner;
-        string strCustomers;
+        string strCustomer;
+        IList<string> allCustomers;
+
+        GAPclass GAP;
 
         /*public Controller(string _dbpath)
         {
@@ -48,7 +53,7 @@ namespace DSS19
             P.connectionString = connectionString;
         }*/
 
-        public Controller (string _pyPath, string _pyScriptPath)
+        public Controller(string _pyPath, string _pyScriptPath)
         {
             this.pythonPath = _pyPath;
             this.pythonScriptsPath = _pyScriptPath;
@@ -56,10 +61,10 @@ namespace DSS19
         }
 
 
-        public void readDb(string custID) 
+        public void readDb(string custID)
         {
             Trace.WriteLine("Controller read DB");
-            if(custID == "")
+            if (custID == "")
             {
                 P.selectFirstRecords();
             }
@@ -100,9 +105,17 @@ namespace DSS19
         public string readClientiDB(string dbOrdiniPath, int customerNumber)
         {
             int numSerie = customerNumber; //numero di clienti di cui leggere la serie
-            strCustomers = P.selectCustomerListORMBis(dbOrdiniPath, numSerie);
-            Trace.WriteLine($"Clienti: {strCustomers}");
-            return strCustomers;
+            strCustomer = P.selectCustomerListORMBis(dbOrdiniPath, numSerie);
+            Trace.WriteLine($"Clienti: {strCustomer}");
+            return strCustomer;
+        }
+
+        public IList<string> readAllClientiDB(string dbOrdiniPath)
+        {
+            //numero di clienti di cui leggere la serie
+            allCustomers = P.selectAllCustomersListORMBis(dbOrdiniPath);
+            //Trace.WriteLine($"Clienti: {strCustomers}");
+            return allCustomers;
         }
 
         public async Task<Bitmap> readCustomerOrdersChart(string dbOrdiniPath, string pyScript)
@@ -110,61 +123,95 @@ namespace DSS19
             Trace.WriteLine("Getting the orders chart...");
             //pythonScriptsPath = System.IO.Path.GetFullPath(pythonScriptsPath);
             pythonScriptsPath = @"C:\Users\federica.pecci2\Documents\GitHub\SSD19-1\DSS19\DSS19\python_scripts";
-            
+
             try
             {
-               
+
                 Bitmap bmp = await pyRunner.getImageAsync(
                     pythonScriptsPath,
                     pyScript,  // chartOrders.py o nuovo script
-                    pythonScriptsPath, 
+                    pythonScriptsPath,
                     dbOrdiniPath,
-                    strCustomers); //strCustomers riga dei customer restituita dal db, select dei customer random
+                    strCustomer); //strCustomers riga dei customer restituita dal db, select dei customer random
                 return bmp;
-            }catch(Exception exception)
+            } catch (Exception exception)
             {
                 Trace.WriteLine("[CONTROLLER] errore: " + exception.Message);
                 return null;
             }
         }
 
-        public async Task<string> readForecastRows(string dbOrdiniPath, string pyScript)
+        public async Task<int> ForecastSpecificCustomerOrderChart(string dbOrdiniPath, string pyScript, string customer)
         {
             Trace.WriteLine("Getting the orders chart...");
-             
             pythonScriptsPath = @"C:\Users\federica.pecci2\Documents\GitHub\SSD19-1\DSS19\DSS19\python_scripts";
-
-            string fcast = "";
-
+            double fcast = double.NaN;
             try
             {
                 string list = await pyRunner.getStringsAsync(
                     pythonScriptsPath,
                     pyScript,  // chartOrders.py o nuovo script
                     pythonScriptsPath,
-                    dbOrdiniPath, 
-                    strCustomers); //strCustomers riga dei customer restituita dal db, select dei customer random
-               
+                    dbOrdiniPath,
+                    customer); //strCustomers riga dei customer restituita dal db, select dei customer random
+
+                NumberFormatInfo provider = new NumberFormatInfo();
+                provider.NumberDecimalSeparator = ".";
                 string[] lines = list.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-                foreach(string s in lines)
+                foreach (string s in lines)
                 {
                     if (s.StartsWith("Actual"))
                     {
-                        fcast = s.Substring(s.LastIndexOf(" "));
-                        Trace.WriteLine(fcast);
+                        fcast = Convert.ToDouble(s.Substring(s.LastIndexOf(" ")), provider);    
                     }
                 }
+                Trace.WriteLine(customer);
+                Trace.WriteLine(fcast);
             }
             catch (Exception exception)
             {
                 Trace.WriteLine("[CONTROLLER] errore: " + exception.Message);
             }
 
-            return fcast;
+            return (int)Math.Round(fcast); // da strina a double a intero
         }
 
 
+        // TODO -> prendere il valore di forecast per tutti i customer e 
+        // salvarli in un array 
+        public async Task<int[]> ForecastAllCustomersOrderChart(string dbOrdiniPath, string pyScript)
+        {
+            IList<int> customerForecasts = new List<int>();
+            int strCustomerForecast = 0;
+            foreach(string customer in allCustomers)
+            {
+                strCustomerForecast = await ForecastSpecificCustomerOrderChart(dbOrdiniPath, pyScript, customer);
+                customerForecasts.Add(strCustomerForecast);
+            }
+            return customerForecasts.ToArray();
+        }
 
+        // Ricerca locale di istanze GAP
+        public async void OptimizeGAP(string dbPath, string pythonFile)
+        {
+            GAP = new GAPclass();
+
+            if (File.Exists("GAPreq.dat"))
+            {
+                string[] txtData = File.ReadAllLines("GAPreq.dat");
+                GAP.req = Array.ConvertAll<string, int>(txtData, new Converter<string, int>(i => int.Parse(i)));
+            }
+            else
+            {
+                GAP.req = await ForecastAllCustomersOrderChart(dbPath, pythonFile); //TO DO dbPath deve essere quello con i dati del 2019
+                File.WriteAllLines("GAPreq.dat", GAP.req.Select(x => x.ToString()));
+            }
+
+            double zub = GAP.SimpleContruct();
+            Trace.WriteLine($"Constructive, zub ) = {zub}");
+            //zub = GAP.Opt10(GAP.c);
+            //Trace.WriteLine($"Local search, zub = {zub}");
+        }
     }
 }

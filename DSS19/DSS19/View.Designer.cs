@@ -49,7 +49,7 @@ namespace DSS19
             this.updateBtn = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnSARIMA = new System.Windows.Forms.ToolStripButton();
-            this.btnLocalSearch = new System.Windows.Forms.ToolStripButton();
+            this.btnOPTIMIZE = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -243,7 +243,7 @@ namespace DSS19
             this.deleteBtn,
             this.updateBtn,
             this.btnSARIMA,
-            this.btnLocalSearch});
+            this.btnOPTIMIZE});
             this.toolStrip1.Location = new System.Drawing.Point(0, 42);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
@@ -262,15 +262,16 @@ namespace DSS19
             this.btnSARIMA.Text = "ARIMA";
             this.btnSARIMA.Click += new System.EventHandler(this.btnSARIMA_Click);
             // 
-            // btnLocalSearch
+            // btnOPTIMIZE
             // 
-            this.btnLocalSearch.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.btnLocalSearch.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnLocalSearch.Image = ((System.Drawing.Image)(resources.GetObject("btnLocalSearch.Image")));
-            this.btnLocalSearch.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnLocalSearch.Name = "btnLocalSearch";
-            this.btnLocalSearch.Size = new System.Drawing.Size(46, 36);
-            this.btnLocalSearch.Text = "toolStripButton2";
+            this.btnOPTIMIZE.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.btnOPTIMIZE.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnOPTIMIZE.Image = ((System.Drawing.Image)(resources.GetObject("btnOPTIMIZE.Image")));
+            this.btnOPTIMIZE.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnOPTIMIZE.Name = "btnOPTIMIZE";
+            this.btnOPTIMIZE.Size = new System.Drawing.Size(123, 36);
+            this.btnOPTIMIZE.Text = "OPTIMIZE";
+            this.btnOPTIMIZE.Click += new System.EventHandler(this.btnOptimize_Click);
             // 
             // App
             // 
@@ -322,7 +323,7 @@ namespace DSS19
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripMenuItem readQuantitiesWithORMToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton btnSARIMA;
-        private System.Windows.Forms.ToolStripButton btnLocalSearch;
         private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.ToolStripButton btnOPTIMIZE;
     }
 }

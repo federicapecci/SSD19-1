@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller.cs" />
+    <Compile Include="GAPclass.cs" />
     <Compile Include="ordini.cs" />
     <Compile Include="PythonRunner.cs" />
     <Compile Include="SQLiteConfiguration.cs" />

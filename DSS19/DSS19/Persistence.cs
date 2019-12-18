@@ -8,8 +8,9 @@
     using System.Data.SQLite;
     using System.Data.SqlClient;
     using System.Data.Common;
+using PyGAP2019;
 
-    namespace DSS19
+namespace DSS19
     {
         class Persistence //model
         {
@@ -345,6 +346,77 @@
 
             return ret;
         }
+
+        public IList<string> selectAllCustomersListORMBis(string dbpath)
+                             
+        {
+            List<string> custLst = null;
+            IList<string> lstOutString = new List<string>();
+
+            try
+            {
+                //var ctx = new SQLiteDatabaseContext(dbpath);
+                using (var ctx = new SQLiteDatabaseContext(dbpath))
+                {
+                    custLst = ctx.Database.SqlQuery<string>("SELECT distinct customer from ordini").ToList();
+                }
+                lstOutString = new List<string>();
+                foreach (var cust in custLst)
+                {
+                    lstOutString.Add("'" + cust + "'");
+                }           
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("[PERSISTENCE] " + ex.Message);
+            }
+            return lstOutString;
+        }
+
+        // Reads an instance from the db
+        public GAPclass readGAPinstance(string dbpath)
+        {
+            int i, j;
+            List<int> lstCap;
+            List<double> lstCosts;
+            GAPclass G = new GAPclass();
+
+            try
+            {
+                using (var ctx = new SQLiteDatabaseContext(dbpath))
+                {
+                    lstCap = ctx.Database.SqlQuery<int>("SELECT cap from capacita").ToList();
+                    G.m = lstCap.Count();
+                    G.cap = new int[G.m];
+                    for (i = 0; i < G.m; i++)
+                        G.cap[i] = lstCap[i];
+
+                    lstCosts = ctx.Database.SqlQuery<double>("SELECT cost from costi").ToList();
+                    G.n = lstCosts.Count / G.m;
+                    G.c = new double[G.m, G.n];
+                    G.req = new int[G.n];
+                    G.sol = new int[G.n];
+                    G.solbest = new int[G.n];
+                    G.zub = Double.MaxValue;
+                    G.zlb = Double.MinValue;
+
+                    for (i = 0; i < G.m; i++)
+                        for (j = 0; j < G.n; j++)
+                            G.c[i, j] = lstCosts[i * G.n + j];
+
+                    for (j = 0; j < G.n; j++)
+                        G.req[j] = -1;          // placeholder
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("[readGAPinstance] Error:" + ex.Message);
+            }
+
+            Trace.WriteLine("Fine lettura dati istanza GAP");
+            return G;
+        }
+
     }
 }
 

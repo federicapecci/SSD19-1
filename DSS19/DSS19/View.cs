@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Configuration;
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace DSS19
 {
@@ -30,7 +31,7 @@ namespace DSS19
             //btnLocalSearch.Enabled = false;
 
             btnSARIMA.Enabled = true;
-            btnLocalSearch.Enabled = true;
+            //Forecast.Enabled = true;
 
             dbOrdiniPath = ConfigurationManager.AppSettings["dbordiniFile"];
             pythonPath = ConfigurationManager.AppSettings["pythonPath"];
@@ -62,18 +63,27 @@ namespace DSS19
             //C.readClientiDB(dbOrdiniPath);
         }
 
+        //metodo richiamato dal bottone "ARIMA"
         private async void loadDb(string pyScript, int customerNumber)
-        {
-         
-            C.readClientiDB(dbOrdiniPath, customerNumber);
+        {       
+            string customer = C.readClientiDB(dbOrdiniPath, customerNumber);
             
+            //DA SCOMMENTARE SE VOGLIO VEDERE IL GRAFICO DI FORECAST
             //stampo la bitmap in un grafico 
             //Bitmap bm = await C.readCustomerOrdersChart(dbOrdiniPath, pyScript);
             //pictureBox2.Image = bm;
             
-            //stampo le previsioni su traceline
-            await C.readForecastRows(dbOrdiniPath, pyScript);           
+            //STAMPO LE FORECAST DI UN CUSTOMER SU TRACELINE
+            await C.ForecastSpecificCustomerOrderChart(dbOrdiniPath, pyScript, customer);           
          
+        }
+
+        //metodo richiamato dal bottone "OPTIMIZE"
+        private async void loadAllCustomersDb(string pyScript)
+        {
+            C.readAllClientiDB(dbOrdiniPath);
+            await C.ForecastAllCustomersOrderChart(dbOrdiniPath, pyScript);
+
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
@@ -84,6 +94,12 @@ namespace DSS19
         private void btnSARIMA_Click(object sender, EventArgs e)
         {
             loadDb("arima_forecast.py", 1);
+        }
+
+        private void btnOptimize_Click(object sender, EventArgs e)
+        {
+            //lo chiamo su 50 customer, ma andrebbe fatto su tutti i customer di sqlordini.lite
+            loadAllCustomersDb("arima_forecast.py");
         }
 
         private void txtConsole_TextChanged(object sender, EventArgs e)
@@ -147,5 +163,9 @@ namespace DSS19
             C.readQuantitiesListORM();
         }
 
+        private void btnLocalSearch_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
