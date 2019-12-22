@@ -11,7 +11,6 @@ namespace DSS19
     public partial class App : Form
     {
 
-
         private int customerRandomNumber;
         private Controller C;
         TextBoxTraceListener _textBoxListener;
@@ -70,8 +69,8 @@ namespace DSS19
             
             //DA SCOMMENTARE SE VOGLIO VEDERE IL GRAFICO DI FORECAST
             //stampo la bitmap in un grafico 
-            //Bitmap bm = await C.readCustomerOrdersChart(dbOrdiniPath, pyScript);
-            //pictureBox2.Image = bm;
+            Bitmap bm = await C.readCustomerOrdersChart(dbOrdiniPath, pyScript);
+            pictureBox2.Image = bm;
             
             //STAMPO LE FORECAST DI UN CUSTOMER SU TRACELINE
             await C.ForecastSpecificCustomerOrderChart(dbOrdiniPath, pyScript, customer);           
@@ -86,9 +85,17 @@ namespace DSS19
 
         }
 
+        //SARIMA
+        private async void loadLastAllCustomersForecast(string pyScript)
+        {
+            C.readAllClientiDB(dbOrdiniPath);           
+            await C.LastForecastAllCustomersOrderChart(dbOrdiniPath, pyScript);
+
+        }
+
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            loadDb("chartOrders.py", 12);
+            loadDb("chartOrders.py", 52);
         }
 
         private void btnSARIMA_Click(object sender, EventArgs e)
@@ -98,8 +105,8 @@ namespace DSS19
 
         private void btnOptimize_Click(object sender, EventArgs e)
         {
-            //lo chiamo su 50 customer, ma andrebbe fatto su tutti i customer di sqlordini.lite
-            loadAllCustomersDb("arima_forecast.py");
+           
+            C.OptimizeGAP(dbOrdiniPath, "arima_forecast.py");
         }
 
         private void txtConsole_TextChanged(object sender, EventArgs e)
@@ -166,6 +173,18 @@ namespace DSS19
         private void btnLocalSearch_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        //SARIMA
+        private void toolStripLabel1_Click(object sender, EventArgs e)
+        {
+            //loadAllCustomersDb("arima_forecast.py");
+            loadLastAllCustomersForecast("arima_forecast.py");
         }
     }
 }

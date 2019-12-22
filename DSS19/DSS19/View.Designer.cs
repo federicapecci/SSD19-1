@@ -50,6 +50,7 @@ namespace DSS19
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnSARIMA = new System.Windows.Forms.ToolStripButton();
             this.btnOPTIMIZE = new System.Windows.Forms.ToolStripButton();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -130,7 +131,7 @@ namespace DSS19
             this.txtConsole.Multiline = true;
             this.txtConsole.Name = "txtConsole";
             this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtConsole.Size = new System.Drawing.Size(388, 506);
+            this.txtConsole.Size = new System.Drawing.Size(388, 466);
             this.txtConsole.TabIndex = 0;
             this.txtConsole.WordWrap = false;
             this.txtConsole.TextChanged += new System.EventHandler(this.txtConsole_TextChanged);
@@ -243,7 +244,8 @@ namespace DSS19
             this.deleteBtn,
             this.updateBtn,
             this.btnSARIMA,
-            this.btnOPTIMIZE});
+            this.btnOPTIMIZE,
+            this.toolStripLabel1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 42);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
@@ -273,6 +275,14 @@ namespace DSS19
             this.btnOPTIMIZE.Text = "OPTIMIZE";
             this.btnOPTIMIZE.Click += new System.EventHandler(this.btnOptimize_Click);
             // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(100, 36);
+            this.toolStripLabel1.Text = "SARIMA";
+            this.toolStripLabel1.Click += new System.EventHandler(this.toolStripLabel1_Click);
+            // 
             // App
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -285,7 +295,6 @@ namespace DSS19
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "App";
-            this.Text = "App";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -325,5 +334,6 @@ namespace DSS19
         private System.Windows.Forms.ToolStripButton btnSARIMA;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.ToolStripButton btnOPTIMIZE;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
     }
 }

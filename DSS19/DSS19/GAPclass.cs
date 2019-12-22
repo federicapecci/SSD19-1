@@ -43,7 +43,7 @@ namespace PyGAP2019
                     dist[i] = c[i, j];
                     ind[i] = i;
                 }
-                Array.Sort(dist, ind);
+                Array.Sort(dist, ind); //lasciare ordinato
                 ii = 0;
 
                 while (ii < m)
@@ -54,7 +54,7 @@ namespace PyGAP2019
                         sol[j] = i;
                         capleft[i] -= req[j];
                         zub += c[i, j];
-                        Trace.WriteLine($"[SimpleConstruct] Client {j} server {i}.");
+                        //Trace.WriteLine($"[SimpleConstruct] Client {j} server {i}.");
                         break;
                     }
                     ii++;
@@ -143,6 +143,8 @@ namespace PyGAP2019
         start: DeltaMax = imax = jmax = int.MinValue;
             iter++;
 
+            //cerco di massimizzare la distanza tra la soluzione trovata con  GAP.opt10(GAP.c) e GAP.tabusearch
+            //per ridurre il costo 
             for (j = 0; j < n; j++)
             {
                 isol = sol[j];
