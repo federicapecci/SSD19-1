@@ -126,18 +126,18 @@ namespace DSS19
 
         private void toolStripButton3_Click(object sender, EventArgs e)
         {
-            C.delete(txtCustomer.Text);
+            //C.delete(txtCustomer.Text);
         }
 
         private void insertBtn_Click(object sender, EventArgs e)
         {
-            C.insert(txtNewCustomer.Text);
+            //C.insert(txtNewCustomer.Text);
         }
 
         private void updateBtn_Click(object sender, EventArgs e)
         {
 
-            C.update(txtCustomer.Text, txtNewCustomer.Text);
+            //C.update(txtCustomer.Text, txtNewCustomer.Text);
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -185,6 +185,21 @@ namespace DSS19
         {
             //loadAllCustomersDb("arima_forecast.py");
             loadLastAllCustomersForecast("arima_forecast.py");
+        }
+
+        private void splitContainer1_Panel1_Paint_1(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void splitContainer1_Panel2_Paint_1(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
