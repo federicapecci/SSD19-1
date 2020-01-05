@@ -9,17 +9,19 @@
     using System.Data.SqlClient;
     using System.Data.Common;
 using PyGAP2019;
+using System.IO;
 
 namespace DSS19
     {
         class Persistence //model
         {
-            public string connectionString;
+            //public string connectionString;
             private IDbConnection conn = null;
             public string factory = "";
+            public GAPclass G = new GAPclass();
+            
 
-
-            private IDbConnection openConnection()
+        private IDbConnection openConnection()
             {
                //factory per creare connection giusta in base al db che abbiamo 
 
@@ -27,7 +29,7 @@ namespace DSS19
                 conn = dbFactory.CreateConnection();
                 try
                 {
-                    conn.ConnectionString = connectionString;
+                    //conn.ConnectionString = connectionString;
                     Trace.WriteLine("[PERSISTANCE] Connessione DB aperta");
                     conn.Open();
                     return conn;
@@ -36,9 +38,7 @@ namespace DSS19
                 {
                     Trace.WriteLine("[PERSISTANCE] errore: " + ex.Message);
                 }
-                return null;
-
-            
+                return null;           
             }
 
             private IDataReader executeQuery(string queryText)
@@ -379,7 +379,6 @@ namespace DSS19
             int i, j;
             List<int> lstCap;
             List<double> lstCosts;
-            GAPclass G = new GAPclass();
 
             try
             {
@@ -388,18 +387,27 @@ namespace DSS19
                     lstCap = ctx.Database.SqlQuery<int>("SELECT cap from capacita").ToList();
                     G.m = lstCap.Count();
                     G.cap = new int[G.m];
+                    //inizializzo ogni magazzino con la sua capacità
                     for (i = 0; i < G.m; i++)
                         G.cap[i] = lstCap[i];
 
                     lstCosts = ctx.Database.SqlQuery<double>("SELECT cost from costi").ToList();
+                    //determino il numero dei clienti 
                     G.n = lstCosts.Count / G.m;
-                    G.c = new double[G.m, G.n];
-                    G.req = new int[G.n];
+                    //alloco spazio per matrice dei costi
+                    G.c = new double[G.m, G.n]; //righe e colonne
+                    // array di richieste, ogni cella è la previsione della quantità che verrà richiesta dall'i-esimo customer
+                    G.req = new int[G.n]; 
+                    //alloco spazio per la sol (array lungo il # di clienti, per ogni cliente ho il riferimento del 
+                    //magazzino a cui si rifarà)
                     G.sol = new int[G.n];
                     G.solbest = new int[G.n];
-                    G.zub = Double.MaxValue;
+                    //costo massimo della soluzione
+                    G.zub = Double.MaxValue; 
+                    //costo minimo della soluzione
                     G.zlb = Double.MinValue;
 
+                    //popolo matrice dei costi
                     for (i = 0; i < G.m; i++)
                         for (j = 0; j < G.n; j++)
                             G.c[i, j] = lstCosts[i * G.n + j];
@@ -417,6 +425,32 @@ namespace DSS19
             return G;
         }
 
+        public void ReadGAPdat()
+        {
+            string[] txtData = File.ReadAllLines("GAPreq.dat");
+            G.req = Array.ConvertAll<string, int>(txtData, new Converter<string, int>(i => int.Parse(i)));
+        }
+
+        public void WriteGAPdat(int[] allCustomers)
+        {
+            G.req = allCustomers;
+            File.WriteAllLines("GAPreq.dat", G.req.Select(x => x.ToString()));
+        }
+
+        public double GetSimpleConstructValue()
+        {
+            return G.SimpleContruct();
+        }
+
+        public double GetOpt10Value()
+        {
+            return G.opt10(G.c);
+        }
+
+        public double GetTabuSearchValue()
+        {
+            return G.TabuSearch(30,100);
+        }
     }
 }
 

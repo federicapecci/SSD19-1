@@ -26,8 +26,6 @@ namespace DSS19
         string strCustomer;
         IList<string> allCustomers;
 
-        GAPclass GAP;
-
         /*public Controller(string _dbpath)
         {
             dbpath = _dbpath;
@@ -246,71 +244,25 @@ namespace DSS19
         // Ricerca locale di istanze GAP
         public async void OptimizeGAP(string dbPath, string pythonFile)
         {
-            GAP = new GAPclass();
-            
-
             if (File.Exists("GAPreq.dat"))
             {
-                string[] txtData = File.ReadAllLines("GAPreq.dat");
-                GAP.req = Array.ConvertAll<string, int>(txtData, new Converter<string, int>(i => int.Parse(i)));
+                P.ReadGAPdat();
             }
             else
             {
-                GAP.req = await LastForecastAllCustomersOrderChart(dbPath, pythonFile); //TO DO dbPath deve essere quello con i dati del 2019
-                File.WriteAllLines("GAPreq.dat", GAP.req.Select(x => x.ToString()));
+                int[] allForecast = await LastForecastAllCustomersOrderChart(dbPath, pythonFile); //TO DO dbPath deve essere quello con i dati del 2019
+                P.WriteGAPdat(allForecast);
             }
 
-            readGAPinstance(dbPath);
+            P.readGAPinstance(dbPath);
 
-            double zub = GAP.SimpleContruct();
+            double zub = P.GetSimpleConstructValue();
 
             Trace.WriteLine($"Constructive, zub = {zub}");
-            zub = GAP.opt10(GAP.c);  //cerca di ottimizzare la soluzione precedente zub = GAP.SimpleContruct();
+            zub = P.GetOpt10Value();  //cerca di ottimizzare la soluzione precedente zub = GAP.SimpleContruct();
             Trace.WriteLine($"opt10, zub = {zub}");
-            zub = GAP.TabuSearch(30, 100); // zub = 31000
+            zub = P.GetTabuSearchValue(); // zub = 31000
             Trace.WriteLine($"TabuSearch, zub = {zub}");
-        }
-
-        // Reads an instance from the db
-        public void readGAPinstance(string dbOrdinipath)
-        {
-            int i, j;
-            List<int> lstCap;
-            List<double> lstCosts;
-
-            try
-            {
-                using (var ctx = new SQLiteDatabaseContext(dbOrdinipath))
-                {
-                    lstCap = ctx.Database.SqlQuery<int>("SELECT cap from capacita").ToList();
-                    GAP.m = lstCap.Count();
-                    GAP.cap = new int[GAP.m];
-                    for (i = 0; i < GAP.m; i++)
-                        GAP.cap[i] = lstCap[i];
-
-                    lstCosts = ctx.Database.SqlQuery<double>("SELECT cost from costi").ToList();
-                    GAP.n = lstCosts.Count / GAP.m;
-                    GAP.c = new double[GAP.m, GAP.n];
-                    GAP.req = new int[GAP.n];
-                    GAP.sol = new int[GAP.n];
-                    GAP.solbest = new int[GAP.n];
-                    GAP.zub = Double.MaxValue;
-                    GAP.zlb = Double.MinValue;
-
-                    for (i = 0; i < GAP.m; i++)
-                        for (j = 0; j < GAP.n; j++)
-                            GAP.c[i, j] = lstCosts[i * GAP.n + j];
-
-                    for (j = 0; j < GAP.n; j++)
-                        GAP.req[j] = -1;          // placeholder
-                }
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine("[readGAPinstance] Error:" + ex.Message);
-            }
-
-            Trace.WriteLine("Fine lettura dati istanza GAP");
         }
     }
 }
